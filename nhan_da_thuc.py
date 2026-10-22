@@ -1,3 +1,4 @@
+# da thuc toi gian cho GF(2^4) va GF(2^8)
 p_gf16 = 0b10011
 p_gf256 = 0b100011011
 
@@ -13,7 +14,7 @@ def tim_bac(so):
 def in_dt(so):
     if so == 0:
         return "0"
-  b = tim_bac(so)
+    b = tim_bac(so)
     ds = []
     i = b
     while i >= 0:
@@ -23,8 +24,7 @@ def in_dt(so):
             elif i == 1:
                 ds.append("x")
             else:
-                ds.append("x^" + str(i));
-        
+                ds.append("x^" + str(i))
         i = i - 1
     kq_chuoi = " + ".join(ds)
     return kq_chuoi

@@ -105,6 +105,19 @@ def nhan_truong(a, b, p, ten="GF", in_buoc=True):
         print("KET QUA CUOI CÙNG:", in_dt(ket_qua_cuoi), "| Dec:", ket_qua_cuoi)
     return ket_qua_cuoi
 
+def nhan_gf(a, b, truong="gf16", in_buoc=False):
+    # ham tien ich de goi nhan nhanh tren truong mong muon
+    ten = str(truong).lower().strip()
+    if ten in ["1", "gf16", "gf(2^4)", "4"]:
+        p = p_gf16
+        ten_hien_thi = "GF(2^4)"
+    elif ten in ["2", "gf256", "gf(2^8)", "8"]:
+        p = p_gf256
+        ten_hien_thi = "GF(2^8)"
+    else:
+        raise ValueError("Truong khong hop le, chi chon gf16 hoac gf256")
+    return nhan_truong(a, b, p, ten_hien_thi, in_buoc=in_buoc)
+
 def main():
     print("CHUONG TRINH NHAN DA THUC")
     print("1. GF(2^4)")

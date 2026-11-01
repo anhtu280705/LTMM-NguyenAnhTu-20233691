@@ -2,6 +2,18 @@
 p_gf16 = 0b10011
 p_gf256 = 0b100011011
 
+# ham chuyen doi input sang so nguyen
+def chuyen_doi_so(chuoi):
+    # ho tro nhap he 2 (1011 hoac 0b1011), he 16 (0x57), hoac he 10 (87)
+    chuoi = chuoi.strip().lower()
+    if chuoi.startswith("0b"):
+        return int(chuoi, 2)
+    if chuoi.startswith("0x"):
+        return int(chuoi, 16)
+    if all(c in "01" for c in chuoi) and len(chuoi) > 1:
+        return int(chuoi, 2)
+    return int(chuoi)
+
 def tim_bac(so):
     if so == 0:
         return -1
@@ -99,19 +111,13 @@ def main():
         print("nhap sai roi")
         return
         
-    print("nhap da thuc A:")
+    print("nhap da thuc A (nhi phan, thap phan hoac hex 0x...):")
     s1 = input(" > ").strip()
-    if all(c in "01" for c in s1):
-        a = int(s1, 2)
-    else:
-        a = int(s1)
+    a = chuyen_doi_so(s1)
         
-    print("nhap da thuc B:")
+    print("nhap da thuc B (nhi phan, thap phan hoac hex 0x...):")
     s2 = input(" > ").strip()
-    if all(c in "01" for c in s2):
-        b = int(s2, 2)
-    else:
-        b = int(s2)
+    b = chuyen_doi_so(s2)
         
     nhan_truong(a, b, p, ten_truong)
 

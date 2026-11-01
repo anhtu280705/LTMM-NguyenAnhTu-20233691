@@ -6,13 +6,19 @@ p_gf256 = 0b100011011
 def chuyen_doi_so(chuoi):
     # ho tro nhap he 2 (1011 hoac 0b1011), he 16 (0x57), hoac he 10 (87)
     chuoi = chuoi.strip().lower()
+    if not chuoi:
+        raise ValueError("Chuoi nhap vao bi rong!")
     if chuoi.startswith("0b"):
-        return int(chuoi, 2)
-    if chuoi.startswith("0x"):
-        return int(chuoi, 16)
-    if all(c in "01" for c in chuoi) and len(chuoi) > 1:
-        return int(chuoi, 2)
-    return int(chuoi)
+        val = int(chuoi, 2)
+    elif chuoi.startswith("0x"):
+        val = int(chuoi, 16)
+    elif all(c in "01" for c in chuoi) and len(chuoi) > 1:
+        val = int(chuoi, 2)
+    else:
+        val = int(chuoi)
+    if val < 0:
+        raise ValueError("Gia tri phai la so khong am!")
+    return val
 
 def tim_bac(so):
     if so == 0:
@@ -119,31 +125,40 @@ def nhan_gf(a, b, truong="gf16", in_buoc=False):
     return nhan_truong(a, b, p, ten_hien_thi, in_buoc=in_buoc)
 
 def main():
-    print("CHUONG TRINH NHAN DA THUC")
-    print("1. GF(2^4)")
-    print("2. GF(2^8)")
-    
-    lua_chon = input("nhap lua chon (1 hoac 2): ").strip()
-    
-    if lua_chon == "1":
-        p = p_gf16
-        ten_truong = "GF(2^4)"
-    elif lua_chon == "2":
-        p = p_gf256
-        ten_truong = "GF(2^8)"
-    else:
-        print("nhap sai roi")
-        return
+    while True:
+        print("\n==============================")
+        print("CHUONG TRINH NHAN DA THUC")
+        print("1. GF(2^4)")
+        print("2. GF(2^8)")
+        print("q. Thoat")
         
-    print("nhap da thuc A (nhi phan, thap phan hoac hex 0x...):")
-    s1 = input(" > ").strip()
-    a = chuyen_doi_so(s1)
-        
-    print("nhap da thuc B (nhi phan, thap phan hoac hex 0x...):")
-    s2 = input(" > ").strip()
-    b = chuyen_doi_so(s2)
-        
-    nhan_truong(a, b, p, ten_truong)
+        lua_chon = input("nhap lua chon (1, 2 hoac q): ").strip().lower()
+        if lua_chon == "q":
+            print("Tam biet!")
+            break
+            
+        if lua_chon == "1":
+            p = p_gf16
+            ten_truong = "GF(2^4)"
+        elif lua_chon == "2":
+            p = p_gf256
+            ten_truong = "GF(2^8)"
+        else:
+            print("Lua chon khong hop le, vui long chon 1 hoac 2!")
+            continue
+            
+        try:
+            print("nhap da thuc A (nhi phan, thap phan hoac hex 0x...):")
+            s1 = input(" > ").strip()
+            a = chuyen_doi_so(s1)
+                
+            print("nhap da thuc B (nhi phan, thap phan hoac hex 0x...):")
+            s2 = input(" > ").strip()
+            b = chuyen_doi_so(s2)
+            
+            nhan_truong(a, b, p, ten_truong, in_buoc=True)
+        except Exception as e:
+            print("Loi nhap du lieu:", e)
 
 if __name__ == "__main__":
     main()

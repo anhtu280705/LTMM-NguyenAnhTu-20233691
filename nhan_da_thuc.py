@@ -24,12 +24,14 @@ def tim_bac(so):
     return bac
 
 def in_dt(so):
-    if so == 0:
+    # in da thuc duoi dang bieu dien toan hoc x^n + ... + 1
+    if so is None or so <= 0:
         return "0"
     b = tim_bac(so)
+    if b < 0:
+        return "0"
     ds = []
-    i = b
-    while i >= 0:
+    for i in range(b, -1, -1):
         if (so >> i) & 1:
             if i == 0:
                 ds.append("1")
@@ -37,9 +39,9 @@ def in_dt(so):
                 ds.append("x")
             else:
                 ds.append("x^" + str(i))
-        i = i - 1
-    kq_chuoi = " + ".join(ds)
-    return kq_chuoi
+    if not ds:
+        return "0"
+    return " + ".join(ds)
 
 def nhan_hai_da_thuc(x, y):
     kq = 0

@@ -81,5 +81,35 @@ class TestNhanDaThuc(unittest.TestCase):
         # xtime(0x80): 0x80 * 0x02 = 0x1b (da thuc toi gian)
         self.assertEqual(nhan_gf(0x80, 0x02, "gf256"), 0x1b)
 
+    def test_tinh_chat_giao_hoan(self):
+        # kiem tra tinh chat giao hoan a * b == b * a tren toan bo GF(2^4)
+        for a in range(16):
+            for b in range(16):
+                self.assertEqual(nhan_gf(a, b, "gf16"), nhan_gf(b, a, "gf16"))
+
+        # kiem tra giao hoan tren mot so phan tu GF(2^8)
+        mau = [0x01, 0x02, 0x57, 0x83, 0xae, 0xff]
+        for a in mau:
+            for b in mau:
+                self.assertEqual(nhan_gf(a, b, "gf256"), nhan_gf(b, a, "gf256"))
+
+    def test_tinh_chat_phan_phoi(self):
+        # kiem tra tinh chat phan phoi: a * (b ^ c) == (a * b) ^ (a * c)
+        a = 0x57
+        b = 0x83
+        c = 0x13
+        ve_trai = nhan_gf(a, b ^ c, "gf256")
+        ve_phai = nhan_gf(a, b, "gf256") ^ nhan_gf(a, c, "gf256")
+        self.assertEqual(ve_trai, ve_phai)
+
+        # kiem tra phan phoi tren GF(2^4)
+        for x in [3, 7, 11]:
+            for y in [5, 9, 13]:
+                for z in [2, 6, 14]:
+                    self.assertEqual(
+                        nhan_gf(x, y ^ z, "gf16"),
+                        nhan_gf(x, y, "gf16") ^ nhan_gf(x, z, "gf16")
+                    )
+
 if __name__ == "__main__":
     unittest.main()

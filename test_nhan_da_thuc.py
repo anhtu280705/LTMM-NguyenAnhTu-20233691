@@ -66,5 +66,20 @@ class TestNhanDaThuc(unittest.TestCase):
         # x^3 * x^3 = x^6 mod P = x^3 + x^2 (8 * 8 = 12)
         self.assertEqual(nhan_gf(8, 8, "gf16"), 12)
 
+    def test_gf256_aes_vector(self):
+        # cac vector kiem thu chuan trong tai lieu AES (FIPS 197)
+        # 0x57 * 0x83 = 0xc1
+        self.assertEqual(nhan_gf(0x57, 0x83, "gf256"), 0xc1)
+        # 0x57 * 0x13 = 0xfe
+        self.assertEqual(nhan_gf(0x57, 0x13, "gf256"), 0xfe)
+        # 0x02 * 0x87 = 0x15
+        self.assertEqual(nhan_gf(0x02, 0x87, "gf256"), 0x15)
+        # 0x02 * 0x57 = 0xae
+        self.assertEqual(nhan_gf(0x02, 0x57, "gf256"), 0xae)
+        # 0x03 * 0x57 = 0xf9
+        self.assertEqual(nhan_gf(0x03, 0x57, "gf256"), 0xf9)
+        # xtime(0x80): 0x80 * 0x02 = 0x1b (da thuc toi gian)
+        self.assertEqual(nhan_gf(0x80, 0x02, "gf256"), 0x1b)
+
 if __name__ == "__main__":
     unittest.main()

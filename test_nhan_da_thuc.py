@@ -43,5 +43,28 @@ class TestNhanDaThuc(unittest.TestCase):
         # x^2 * x = x^3 (4 * 2 = 8)
         self.assertEqual(nhan_gf(4, 2, "gf16"), 8)
 
+    def test_nhan_voi_khong(self):
+        # kiem tra a * 0 luon bang 0
+        for val in [0, 1, 5, 11, 15]:
+            self.assertEqual(nhan_gf(val, 0, "gf16"), 0)
+            self.assertEqual(nhan_gf(0, val, "gf16"), 0)
+        self.assertEqual(nhan_gf(0x57, 0, "gf256"), 0)
+        self.assertEqual(nhan_gf(0, 0x83, "gf256"), 0)
+
+    def test_nhan_voi_mot(self):
+        # kiem tra phan tu don vi a * 1 == a
+        for val in range(16):
+            self.assertEqual(nhan_gf(val, 1, "gf16"), val)
+            self.assertEqual(nhan_gf(1, val, "gf16"), val)
+        self.assertEqual(nhan_gf(0x57, 1, "gf256"), 0x57)
+        self.assertEqual(nhan_gf(1, 0xc1, "gf256"), 0xc1)
+
+    def test_nhan_vuot_bac_gf16(self):
+        # kiem tra phep nhan can rut gon tren GF(2^4)
+        # x^3 * x = x^4 mod (x^4 + x + 1) = x + 1 (8 * 2 = 3)
+        self.assertEqual(nhan_gf(8, 2, "gf16"), 3)
+        # x^3 * x^3 = x^6 mod P = x^3 + x^2 (8 * 8 = 12)
+        self.assertEqual(nhan_gf(8, 8, "gf16"), 12)
+
 if __name__ == "__main__":
     unittest.main()

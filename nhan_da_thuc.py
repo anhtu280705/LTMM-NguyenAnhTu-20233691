@@ -43,11 +43,12 @@ def in_dt(so):
         return "0"
     return " + ".join(ds)
 
-def nhan_hai_da_thuc(x, y):
+def nhan_hai_da_thuc(x, y, in_buoc=True):
     kq = 0
     i = 0
     t = y
-    print("  --- bat dau nhan ---")
+    if in_buoc:
+        print("  --- bat dau nhan ---")
     
     if x == 0 or t == 0:
         return 0
@@ -55,45 +56,53 @@ def nhan_hai_da_thuc(x, y):
     while t > 0:
         if t & 1:
             phan_du = x << i
-            print("  bit thu", i, "bang 1, XOR them:", in_dt(phan_du))
+            if in_buoc:
+                print("  bit thu", i, "bang 1, XOR them:", in_dt(phan_du))
             kq = kq ^ phan_du
         t = t >> 1
         i = i + 1
         
-    print("  tich chua rut gon la:", in_dt(kq))
+    if in_buoc:
+        print("  tich chua rut gon la:", in_dt(kq))
     return kq
 
-def chia_va_lay_du(tich, p_toi_gian):
-    print("  --- rut gon ---")
+def chia_va_lay_du(tich, p_toi_gian, in_buoc=True):
+    if in_buoc:
+        print("  --- rut gon ---")
     bp = tim_bac(p_toi_gian)
     
     if tim_bac(tich) < bp:
-        print("  bac nho hon nen thoi khong chia nua")
+        if in_buoc:
+            print("  bac nho hon nen thoi khong chia nua")
         return tich
         
     lan = 1
     while tim_bac(tich) >= bp:
         chenh_lech = tim_bac(tich) - bp
         p_dich = p_toi_gian << chenh_lech
-        print("  lan", lan, ": XOR voi", in_dt(p_dich))
+        if in_buoc:
+            print("  lan", lan, ": XOR voi", in_dt(p_dich))
         tich = tich ^ p_dich
-        print("  ket qua sau khi XOR:", in_dt(tich))
+        if in_buoc:
+            print("  ket qua sau khi XOR:", in_dt(tich))
         lan = lan + 1
         
     return tich
 
-def nhan_truong(a, b, p, ten):
-    print("\n==============================")
-    print("Dang tinh tren truong:", ten)
-    print("A =", in_dt(a))
-    print("B =", in_dt(b))
-    print("P =", in_dt(p))
+def nhan_truong(a, b, p, ten="GF", in_buoc=True):
+    if in_buoc:
+        print("\n==============================")
+        print("Dang tinh tren truong:", ten)
+        print("A =", in_dt(a))
+        print("B =", in_dt(b))
+        print("P =", in_dt(p))
     
-    tich_chua_rut_gon = nhan_hai_da_thuc(a, b)
-    ket_qua_cuoi = chia_va_lay_du(tich_chua_rut_gon, p)
+    tich_chua_rut_gon = nhan_hai_da_thuc(a, b, in_buoc=in_buoc)
+    ket_qua_cuoi = chia_va_lay_du(tich_chua_rut_gon, p, in_buoc=in_buoc)
     
-    print("------------------------------")
-    print("KET QUA CUOI CÙNG:", in_dt(ket_qua_cuoi), "| Dec:", ket_qua_cuoi)
+    if in_buoc:
+        print("------------------------------")
+        print("KET QUA CUOI CÙNG:", in_dt(ket_qua_cuoi), "| Dec:", ket_qua_cuoi)
     return ket_qua_cuoi
 
 def main():

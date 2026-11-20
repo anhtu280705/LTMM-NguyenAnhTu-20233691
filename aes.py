@@ -18,7 +18,7 @@ def mul(a,b):
         a=xt(a); b>>=1
     return r
 
-def hx(st): return "".join(f"{st[r][c]:02x}" for r in range(4) for c in range(4))
+def hx(st): return "".join(f"{st[r][c]:02x}" for c in range(4) for r in range(4))
 
 def aes(pt,key):
     kb=list(bytes.fromhex(key.zfill(32)))
@@ -29,11 +29,13 @@ def aes(pt,key):
             t=[sbox[x] for x in t[1:]+t[:1]]; t[0]^=rcon[i//4]
         w.append([w[i-4][j]^t[j] for j in range(4)])
     pb=list(bytes.fromhex(pt.zfill(32)))
-    st=[[pb[4*r+c] for c in range(4)] for r in range(4)]
+    st=[[pb[4*c+r] for c in range(4)] for r in range(4)]
+    for c in range(4):
+        for r in range(4): st[r][c]^=w[c][r]
     for v in range(1,11):
         for r in range(4):
             for c in range(4): st[r][c]=sbox[st[r][c]]
-        for r in range(1,4): st[r]=st[r][-r:]+st[r][:-r]
+        for r in range(1,4): st[r]=st[r][r:]+st[r][:r]
         for c in range(4):
             a0,a1,a2,a3=st[0][c],st[1][c],st[2][c],st[3][c]
             st[0][c]=mul(2,a0)^mul(3,a1)^a2^a3

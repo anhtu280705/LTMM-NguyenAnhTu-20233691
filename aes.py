@@ -36,12 +36,13 @@ def aes(pt,key):
         for r in range(4):
             for c in range(4): st[r][c]=sbox[st[r][c]]
         for r in range(1,4): st[r]=st[r][r:]+st[r][:r]
-        for c in range(4):
-            a0,a1,a2,a3=st[0][c],st[1][c],st[2][c],st[3][c]
-            st[0][c]=mul(2,a0)^mul(3,a1)^a2^a3
-            st[1][c]=a0^mul(2,a1)^mul(3,a2)^a3
-            st[2][c]=a0^a1^mul(2,a2)^mul(3,a3)
-            st[3][c]=mul(3,a0)^a1^a2^mul(2,a3)
+        if v<10:
+            for c in range(4):
+                a0,a1,a2,a3=st[0][c],st[1][c],st[2][c],st[3][c]
+                st[0][c]=mul(2,a0)^mul(3,a1)^a2^a3
+                st[1][c]=a0^mul(2,a1)^mul(3,a2)^a3
+                st[2][c]=a0^a1^mul(2,a2)^mul(3,a3)
+                st[3][c]=mul(3,a0)^a1^a2^mul(2,a3)
         for c in range(4):
             for r in range(4): st[r][c]^=w[4*v+c][r]
         rk="".join(f"{x:02x}" for col in w[4*v:4*v+4] for x in col)

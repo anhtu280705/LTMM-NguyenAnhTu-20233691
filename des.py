@@ -33,11 +33,11 @@ def des(pt,key):
         so=""
         for j in range(8):
             x=er[6*j:6*j+6]
-            so+=bin(sbox[j][int(x[:2],2)][int(x[2:],2)])[2:].zfill(4)
-        f=so
+            so+=bin(sbox[j][int(x[0]+x[5],2)][int(x[1:5],2)])[2:].zfill(4)
+        f=hv(so,p)
         l,r=r,xr(l,f)
         print(f"vong {i+1} K:{int(k,2):012x} L:{int(l,2):08x} R:{int(r,2):08x}")
-    kq=hv(l+r,ip1)
+    kq=hv(r+l,ip1)
     res=f"{int(kq,2):016x}"
     print("out:",res)
     return res
